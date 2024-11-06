@@ -19,3 +19,6 @@ You can deploy your new Vite project with a single command from your terminal us
 ```shell
 $ vercel
 ```
+
+https://github.com/RosettaCommons/RFdiffusion?tab=readme-ov-file#partial-diffusion
+https://github.com/RosettaCommons/RFdiffusion/blob/main/docker/Dockerfile

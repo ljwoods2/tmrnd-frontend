@@ -1,125 +1,109 @@
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import "../App.css";
+import { CopyBlock, dracula } from "react-code-blocks";
+
+interface Job {
+  JobID: string;
+  Status: string;
+  OutputFiles: string[];
+  Timestamp: string;
+}
 
 const TestQueue: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [jobName, setJobName] = useState("");
-  const [pdbFile, setPdbFile] = useState<File | null>(null);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
-  const handlePdbFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setPdbFile(e.target.files[0]);
-    }
-  };
+  const codeText = selectedJob
+    ? `import zarrtraj\nimport MDAnalysis as mda\nu = mda.Universe("/path/to/pdb",\n "${selectedJob.OutputFiles[0]}")`
+    : "";
 
-  const fetchDefaultFile = async () => {
-    console.log("Fetching default file...");
-    const response = await fetch("https://files.rcsb.org/download/2KL8.pdb");
-
-    const blob = await response.blob();
-    const file = new File([blob], "2KL8.pdb", {
-      type: "application/octet-stream",
-    });
-    setPdbFile(file);
-  };
-
-  const handleJobSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (!email || !jobName || !pdbFile) {
-      alert("Please provide both a job name and a PDB file.");
-      return;
-    }
-
-    const toBase64 = (file: Blob) =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          if (reader.result) {
-            resolve((reader.result as string).split(",")[1]);
-          } else {
-            reject(new Error("File reading failed"));
-          }
-        };
-        reader.onerror = (error) => reject(error);
-      });
-
-    const fileBase64 = await toBase64(pdbFile);
-
-    const payload = {
-      email,
-      jobName,
-      file: fileBase64,
-    };
-
-    try {
-      const response = await fetch(
-        "https://w0kfu9l8nk.execute-api.us-east-1.amazonaws.com/default/submitJob",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch(
+          "https://rkszuevwgb.execute-api.us-east-1.amazonaws.com/query"
+        ); // Adjust the URL to match your API endpoint
+        if (!response.ok) {
+          throw new Error(`Failed to fetch jobs: ${response.statusText}`);
         }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        alert("Job submitted successfully!");
-        console.log("Job Name:", jobName);
-        console.log("PDB File:", pdbFile);
-
-        // Reset form fields
-        setJobName("");
-        setPdbFile(null);
-      } else {
-        alert("Failed to submit job: " + data.error);
+        const data = await response.json();
+        setJobs(data); // Assuming data is an array of jobs
+      } catch (err) {
+        setError("Failed to fetch jobs. Please try again later.");
+        console.error(err);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        alert("An error occurred: " + error.message);
-      } else {
-        alert("An unknown error occurred");
-      }
-    }
+    };
+    fetchJobs();
+  }, []);
+
+  const handleInfoClick = (job: Job) => {
+    setSelectedJob(job);
+  };
+
+  // Function to close the popup
+  const closePopup = () => {
+    setSelectedJob(null);
   };
 
   return (
-    <div className="right-side">
-      {/* New Section for Job Name and PDB File Upload */}
-      <h2>Submit Job</h2>
-      <input
-        type="text"
-        placeholder="Job Name"
-        value={jobName}
-        onChange={(e) => setJobName(e.target.value)}
-      />
-      <div className="file-upload">
-        <div>
-          <input
-            id="pdb-submit"
-            type="file"
-            accept=".pdb"
-            onChange={handlePdbFileChange}
-            style={{ display: "none" }}
-          />
-          <label htmlFor="pdb-submit" className="default-file-button">
-            Select PDB File
-          </label>
-        </div>
-        <button className="default-file-button" onClick={fetchDefaultFile}>
-          Use sample file
-        </button>
-        {pdbFile && <span className="fname">{pdbFile.name}</span>}
+    <div className="submit-jobs-container">
+      <h2>Job List</h2>
+      {error && <p className="error-message">{error}</p>}
+      <div className="scrollable-panel">
+        {jobs.map((job) => (
+          <div key={job.JobID} className="job-tile">
+            <h3>{job.JobID}</h3>
+            <p>Status: {job.Status}</p>
+            <p>Created: {new Date(job.Timestamp).toLocaleString()}</p>
+            <ul>
+              {job.OutputFiles.map((file, index) => (
+                <li key={index}>
+                  <a href={file} target="_blank" rel="noopener noreferrer">
+                    {file}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <button
+              className="see-info-button"
+              onClick={() => handleInfoClick(job)}
+            >
+              info
+            </button>
+          </div>
+        ))}
       </div>
-      <input
-        type="text"
-        placeholder="Email address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button className="submit-button" onClick={handleJobSubmit}>
-        Submit Job
-      </button>
+      {selectedJob && (
+        <div className="popup-overlay" onClick={closePopup}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Job Info for {selectedJob.JobID}</h3>
+            <p>Output files:</p>
+            <ul>
+              {selectedJob.OutputFiles.map((file, index) => (
+                <li key={index}>
+                  <a href={file} target="_blank" rel="noopener noreferrer">
+                    {file}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p>To access the resulting trajectories, do:</p>
+            <div className="code-block">
+              <CopyBlock
+                text={codeText}
+                language="python"
+                showLineNumbers={true}
+                theme={dracula}
+              />
+            </div>
+
+            <button className="close-button" onClick={closePopup}>
+              ok
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

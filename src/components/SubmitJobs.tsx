@@ -86,7 +86,19 @@ const SubmitJobs: React.FC = () => {
   return (
     <div className="right-side">
       {/* New Section for Job Name and PDB File Upload */}
-      <h2>Submit Job</h2>
+      <h2>Prototype RFdiffusion + Gromacs automation with Zarrtraj</h2>
+      <div className="instructions">
+        <p>
+          This tool will run RFdiffusion on your protein to attempt to generate
+          similar proteins with different residues and folding. Then, it will
+          solvate the original and resulting proteins in a water box and run
+          short MD simulations to observe their behavior. The results will be
+          provided to you via S3 URLs on the next page once the job is complete.
+          Trajectories can be streamed directly from the S3 URL using{" "}
+          <a href="https://github.com/becksteinlab/zarrtraj">Zarrtraj</a>. See
+          the final page for more.
+        </p>
+      </div>
       <input
         type="text"
         placeholder="Job Name"

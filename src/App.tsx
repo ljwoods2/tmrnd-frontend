@@ -3,6 +3,7 @@ import "./App.css";
 import SubmitJobs from "./components/SubmitJobs.tsx";
 import PageSelector from "./components/PageSelector.tsx";
 import TestQueue from "./components/TestQueue.tsx";
+import AccessInstructions from "./components/AccessInstructions.tsx";
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -14,9 +15,9 @@ const App: React.FC = () => {
       case 1:
         return <TestQueue />;
       case 2:
-        return <PageThree />;
+        return <AccessInstructions />;
       default:
-        return <h1>txt</h1>;
+        return <h1>Error</h1>;
     }
   };
 

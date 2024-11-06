@@ -42,13 +42,13 @@
   align-items: center;
   justify-content: center;
   gap: 40px;
+  min-height: 500px;
 }
 
 .container {
   display: flex;
-  flex-direction: row;
   width: 800px; /* must be no more than the mobile width (in the media tag at the bottom) */
-  min-height: 500px;
+  min-height: 600px;
   background-color: rgba(255, 255, 255, 0.8);
   border: 2px solid white;
   border-radius: 10px;
@@ -75,14 +75,17 @@ h1 {
 
 
 .right-side {
-  width: 65%;
   display: flex;
   flex-direction: column;
   font-family: Figtree, Arial, sans-serif; 
   color: #333;
   gap: 20px;
   align-items: stretch;
+  width: 50%;
+  min-height: 600px;
 }
+
+
 
 
 select {
@@ -152,11 +155,170 @@ input {
 }
 
 
+/* Page 2 */
+
+
+.submit-jobs-container {
+  display: flex;
+  flex-direction: column;
+  font-family: Figtree, Arial, sans-serif; 
+  color: #333;
+  min-height: 600px;
+  align-items: stretch;
+  width: 60%;
+
+}
+
+/*
+  display: flex;
+  flex-direction: column;
+  font-family: Figtree, Arial, sans-serif; 
+  color: #333;
+  gap: 20px;
+  align-items: stretch;
+  width: 50%;
+*/
+
+/* display: flex;
+flex-direction: row;
+width: 800px;
+min-height: 600px;
+background-color: rgba(255, 255, 255, 0.8);
+border: 2px solid white;
+border-radius: 10px;
+padding: 20px;
+box-shadow: 0 0 24px rgba(0, 0, 0, 0.8);
+justify-content: center;
+align-items: stretch;
+width: 100%; */
+
+.job-tile {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  background-color: #a3a3a3;
+  color: #333;
+  border-radius: 5px;
+  padding: 0 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.job-tile h3 {
+  font-weight: bold;
+  color: #333;
+}
+
+.job-tile ul {
+  list-style-type: none;
+  display: none;
+}
+
+.code-block {
+  text-align: left;
+  align-items: left;
+}
+
+
+.see-info-button {
+  background-color: #545454;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.see-info-button:hover {
+  opacity: 0.9;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Popup content box */
+.popup-content {
+  background-color: #ffffff; /* White background */
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 80%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  text-align: center;
+}
+
+.popup-content h3 {
+  margin-top: 0;
+}
+
+.popup-content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.popup-content ul li {
+  margin-bottom: 10px;
+}
+
+.popup-content a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.close-button {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #0056b3;
+}
+
+.usage {
+  display: flex;
+  flex-direction: column;
+  font-family: Figtree, Arial, sans-serif; 
+  color: #333;
+  align-items: stretch;
+  width: 85%;
+  min-height: 600px;
+}
+
+.instructions {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 20px;
+}
+
+
+
 @media (max-width: 800px) {
   .container {
       width: 85%;
       flex-direction: column;
       margin-top: 50px;
+      align-items: center;
   }
 
   .right-side {
@@ -167,6 +329,22 @@ input {
   input {
       width: calc(100% - 16px);
   }
+
+  .submit-jobs-container {
+    width: 100%;
+    padding: 0;
+    align-items: center;
+  }
+
+  .job-tile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+
+  .see-info-button {
+    margin-left: 0;
+    margin-top: 10px;
+  }
 }
-
-
