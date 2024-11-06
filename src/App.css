@@ -96,6 +96,35 @@ input {
   opacity: 0.9;
 }
 
+.file-upload {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  align-items: center;
+}
+
+.default-file-button {
+  background-color: #545454;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.default-file-button:hover {
+  opacity: 0.9;
+}
+
+.fname {
+  color: #4b4b4b;
+  border-radius: 5px;
+  padding: 5px;
+  outline: 3px dotted rgb(255, 157, 0); 
+  margin-left: 20px;
+}
+
+
 @media (max-width: 800px) {
   .container {
       width: 85%;
