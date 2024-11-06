@@ -1,4 +1,3 @@
-import { useState, ChangeEvent } from "react";
 import "../App.css";
 import { CopyBlock, dracula } from "react-code-blocks";
 
