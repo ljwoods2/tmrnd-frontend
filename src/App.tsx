@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
 import "./App.css";
 
 function App() {
@@ -23,18 +23,24 @@ function App() {
     setPdbFile(file);
   };
 
-  const handleJobSubmit = async (e) => {
+  const handleJobSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!email || !jobName || !pdbFile) {
       alert("Please provide both a job name and a PDB file.");
       return;
     }
 
-    const toBase64 = (file) =>
+    const toBase64 = (file: Blob) =>
       new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.split(",")[1]); // Remove the base64 prefix
+        reader.onload = () => {
+          if (reader.result) {
+            resolve((reader.result as string).split(",")[1]);
+          } else {
+            reject(new Error("File reading failed"));
+          }
+        };
         reader.onerror = (error) => reject(error);
       });
 
@@ -69,7 +75,11 @@ function App() {
         alert("Failed to submit job: " + data.error);
       }
     } catch (error) {
-      alert("An error occurred: " + error.message);
+      if (error instanceof Error) {
+        alert("An error occurred: " + error.message);
+      } else {
+        alert("An unknown error occurred");
+      }
     }
   };
 
