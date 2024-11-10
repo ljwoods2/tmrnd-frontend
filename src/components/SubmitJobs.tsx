@@ -5,6 +5,7 @@ const SubmitJobs: React.FC = () => {
   const [email, setEmail] = useState("");
   const [jobName, setJobName] = useState("");
   const [pdbFile, setPdbFile] = useState<File | null>(null);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
   const handlePdbFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -64,13 +65,15 @@ const SubmitJobs: React.FC = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert("Job submitted successfully!");
-        console.log("Job Name:", jobName);
-        console.log("PDB File:", pdbFile);
+        setSubmissionSuccess(true); // Show success animation
+        console.log("Job submitted successfully!");
 
-        // Reset form fields
-        setJobName("");
-        setPdbFile(null);
+        // Reset form fields after animation delay
+        setTimeout(() => {
+          setJobName("");
+          setPdbFile(null);
+          setSubmissionSuccess(false);
+        }, 3000); // 3 seconds for the animation to display
       } else {
         alert("Failed to submit job: " + data.error);
       }
@@ -90,11 +93,11 @@ const SubmitJobs: React.FC = () => {
       <div className="instructions">
         <p>
           This tool will run RFdiffusion on your protein to attempt to generate
-          similar proteins with different residues and folding. Then, it will
-          solvate the original and resulting proteins in a water box and run
-          short MD simulations to observe their behavior. The results will be
-          provided to you via S3 URLs on the next page once the job is complete.
-          Trajectories can be streamed directly from the S3 URL using{" "}
+          a similar protein with different residues and folding. Then, it will
+          solvate the resulting protein in a water box and run a short MD
+          simulation to observe its behavior. The results will be provided to
+          you via S3 URLs on the next page once the job is complete. Topologies
+          and trajectories can be streamed directly from the S3 URL using{" "}
           <a href="https://github.com/becksteinlab/zarrtraj">Zarrtraj</a>. See
           the final page for more.
         </p>
@@ -132,6 +135,13 @@ const SubmitJobs: React.FC = () => {
       <button className="submit-button" onClick={handleJobSubmit}>
         Submit Job
       </button>
+
+      {/* Green check animation */}
+      {submissionSuccess && (
+        <div className="success-animation">
+          <div className="checkmark"></div>
+        </div>
+      )}
     </div>
   );
 };

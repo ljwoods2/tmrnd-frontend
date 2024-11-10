@@ -15,7 +15,11 @@ const TestQueue: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   const codeText = selectedJob
-    ? `import zarrtraj\nimport MDAnalysis as mda\nu = mda.Universe("/path/to/pdb",\n "${selectedJob.OutputFiles[0]}")`
+    ? `import zarrtraj\nimport MDAnalysis as mda\nimport fsspec\nwith fsspec.open("${selectedJob.OutputFiles[1]}", 
+\t\t\t"r", anon=True) as top:
+\tstorage_options = {"anon": True}
+\tu = mda.Universe(top,\n\t\t"${selectedJob.OutputFiles[2]}", 
+\t\tstorage_options=storage_options, topology_format="PDB")`
     : "";
 
   useEffect(() => {
@@ -88,7 +92,7 @@ const TestQueue: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <p>To access the resulting trajectories, do:</p>
+            <p>To access the resulting trajectory, do:</p>
             <div className="code-block">
               <CopyBlock
                 text={codeText}

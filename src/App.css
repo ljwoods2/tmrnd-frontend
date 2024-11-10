@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: center;
   background-size: 300% 300%;
-  background-image: linear-gradient(-45deg, rgb(16, 17, 17) 0%, rgb(0, 0, 0) 25%, rgb(122, 131, 233) 51%, #6c4d4d 120%);
+  background-image: linear-gradient(-45deg, rgb(16, 17, 17) 0%, rgb(0, 0, 0) 25%, rgb(63, 73, 181) 51%, #671e1e 120%);
 }
 
 /* Page selector */
@@ -61,6 +61,11 @@
 .page-selector {
   display: flex;
   flex-direction: row;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  border: 2px solid white;
+  border-radius: 200px;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.8);
 }
 
 a {
@@ -81,7 +86,7 @@ h1 {
   color: #333;
   gap: 20px;
   align-items: stretch;
-  width: 50%;
+  width: 80%;
   min-height: 600px;
 }
 
@@ -108,7 +113,7 @@ input {
 
 .submit-button {
   font-size: 16px;
-  background-color: #0d98aa;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -196,13 +201,12 @@ width: 100%; */
   display: flex;
   flex-direction: row;
   font-size: 14px;
-  background-color: #a3a3a3;
+  background-color: #bcbcbc;
   color: #333;
   border-radius: 5px;
   padding: 0 15px;
   margin-top: 10px;
   margin-bottom: 10px;
-  cursor: pointer;
   gap: 20px;
   align-items: center;
   width: 100%;
@@ -225,7 +229,7 @@ width: 100%; */
 
 
 .see-info-button {
-  background-color: #545454;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 3px;
@@ -255,7 +259,7 @@ width: 100%; */
   background-color: #ffffff; /* White background */
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: 700px;
   max-width: 80%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -300,7 +304,7 @@ width: 100%; */
   font-family: Figtree, Arial, sans-serif; 
   color: #333;
   align-items: stretch;
-  width: 85%;
+  width: 80%;
   min-height: 600px;
 }
 
@@ -346,5 +350,57 @@ width: 100%; */
   .see-info-button {
     margin-left: 0;
     margin-top: 10px;
+  }
+}
+
+.success-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #e0ffe0;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  z-index: 1000;
+  animation: fadeInOut 3s ease;
+}
+
+.checkmark {
+  width: 40px;
+  height: 20px;
+  border-left: 5px solid #4caf50;
+  border-bottom: 5px solid #4caf50;
+  transform: rotate(-45deg);
+  margin-top: 10px;
+  animation: checkmarkDraw 0.5s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translate(-50%, -50%);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) translate(-50%, -50%);
+  }
+}
+
+@keyframes checkmarkDraw {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  100% {
+    width: 40px;
+    height: 20px;
   }
 }
